@@ -2,31 +2,13 @@ import express from 'express';
 import {createReadStream} from 'node:fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import userRouter from './router/route.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const PORT = 3000;
 const app = express();
-
-
-let users = [{
-    name: 'kunle',
-    track:'backend',
-    age: 24
-},
-{
-    name:'bola',
-    track: 'frontend',
-    age: 25
-},
-{
-    name: 'john',
-    track: 'design',
-    age: 21
-}
-]
-
 
 app.get('/about',(req,res)=>{
     res.status(201).json('this is the about route');
@@ -35,6 +17,7 @@ app.get('/about',(req,res)=>{
 // To serve the index html page from the public dir
 // app.use(express.static('public'));
 //OR
+
 
 app.get('/',(req,res)=>{
     const filePath = path.join(__dirname + '/public/index.html')
@@ -68,6 +51,7 @@ app.put('/form/', (req,res)=>{
    })
 })
 
+
 // loclahost:3000/form/1?name=abc
 app.delete('/form/:id', (req,res)=>{
     const id = req.params.id
@@ -79,6 +63,9 @@ app.delete('/form/:id', (req,res)=>{
     })
 
 })
+
+app.use('/app', userRouter)
+
 
 
 app.listen(PORT,()=>{

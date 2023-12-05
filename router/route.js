@@ -1,7 +1,9 @@
 
-import {express} from 'express';
+import express from 'express';
+import {validate} from '../middleware/validate.js';
 
 const router = express.Router();
+
 let users = [{
     name: 'kunle',
     track:'backend',
@@ -26,13 +28,13 @@ router.get('/users', (req, res)=>{
     })
 })
 
-router.post('/users', (req,res)=>{
+router.post('/users', validate,(req,res)=>{
+    console.log(req.body)
     const {name, age, track} = req.body;
-    console.log(data);
+    // console.log(data);
     users.push({
         name, track, age
     })
-    res.setHeader('Content-type','routerlication/json');
     res.status(201).json({
         message: 'created user successfuly',
         data: users
@@ -43,7 +45,7 @@ router.put('/users/:name', (req,res)=>{
     console.log(data);
     const userName = req.params.name;
     const updateUsers = users.map((user)=>{
-        if (userName != user.name) return
+        if (userName != user.name) return user
         return data
     })
 
@@ -70,3 +72,5 @@ router.delete('/users/:user', (req,res)=>{
     })
 
 })
+
+export default router;
